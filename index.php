@@ -3,7 +3,7 @@
 /**
 * Plugin Name: Kirki Simple Color
 * Author: Ravi Shakya
-* Version: 0.2
+* Version: 0.3
 * Requires WP: 4.9
 * Requires PHP: 5.6
 * Description: Simple colorpicker wrapped in modal
@@ -12,6 +12,13 @@
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
+}
+
+if( !defined( "BIZBERG_KSC_PLUGIN_DIR_URL" ) ){
+	$ksc_content_url  = untrailingslashit( dirname( dirname( get_stylesheet_directory_uri() ) ) );
+	$ksc_content_dir  = wp_normalize_path( untrailingslashit( WP_CONTENT_DIR ) );
+	$ksc_absolute_url = str_replace( $ksc_content_dir, $ksc_content_url, wp_normalize_path( dirname( __FILE__ ) ) ); 
+	define( "BIZBERG_KSC_PLUGIN_DIR_URL", set_url_scheme( $ksc_absolute_url ) );
 }
 
 add_action( 'init' , 'bizberg_kirki_simple_color_control_register' );
@@ -41,12 +48,12 @@ if( !function_exists( 'bizberg_kirki_simple_color_customize_register' ) ){
 			public function enqueue() {
 				wp_enqueue_script( 
 					'bizberg-simple-color-js', 
-					plugin_dir_url( __FILE__ ) . 'js/scripts.js', 
+					BIZBERG_KSC_PLUGIN_DIR_URL . '/js/scripts.js', 
 					array( 'jquery' )
 				);
 				wp_enqueue_style( 
 					'bizberg-simple-color-css', 
-					plugin_dir_url( __FILE__ ) . 'css/style.css' 
+					BIZBERG_KSC_PLUGIN_DIR_URL . '/css/style.css' 
 				);
 			}
 
